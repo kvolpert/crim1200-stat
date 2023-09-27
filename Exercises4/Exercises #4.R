@@ -1,6 +1,6 @@
 
 # setting working directory
-setwd("/Users/katievolpert/Desktop/Code/CRIM 1200/Week 3")
+setwd("/Users/katievolpert/Documents/GitHub/crim1200-stat/Exercises4")
 
 # load packages
 # install.packages("palmerpenguins")
@@ -10,7 +10,10 @@ library(ggplot2)
 ggplot2::theme_set(ggplot2::theme_minimal())
 
 #About the data
-#Data were collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network. The palmerpenguins package contains two datasets. One is called penguins, and is a simplified version of the raw data; see ?penguins for more info.
+#Data were collected and made available by Dr. Kristen Gorman and the Palmer 
+#Station, Antarctica LTER, a member of the Long Term Ecological Research Network. 
+#The palmerpenguins package contains two datasets. One is called penguins, and is 
+#a simplified version of the raw data; see ?penguins for more info.
 # Source: https://github.com/allisonhorst/palmerpenguins/blob/main/README.md
 ?penguins
 
