@@ -5,26 +5,103 @@ date: "2023-09-27"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+VARIABLE TYPES:
+
+Categorical — usually strings, identify which category something falls into 
+  Ordinal — ordered categorical variables (ex. education levels)
+  Nominal — unordered
+  Binary — 0 or 1, yes or no, 2 options
+Quantitative — numbers
+  Continuous — the values in between the values are relevant
+  Discrete — the in between values don't matter
+
+QUANTITATIVE ANALYSIS:
+
+```{r, include = TRUE}
+
+# Initial analysis
+summary() # tells you the min, max, mean, median, and quartiles (only for quantitative)
+table() 
+# one variable tells you the count of each value (mostly used for categorical)
+# two variables creates a contingency table 
+prop.table(table()) # tells you the proportion of each value (mostly used for categorical)
+
+# na.rm = T to exclude NAs in the calculations
+
+# Center
+median()
+mean()
+
+# Shape
+# Modes — number of humps in the histogram
+  # Unimodal = one
+  # Bimodal = two 
+  # Multimodal = multiple
+  # Uniform = no peaks
+# Symmetry
+# Outliers
+# Skew
+  # Skewed right when the tail is on the right
+  # Skewed left when the tail is on the left
+
+# Spread
+range()
+sd() # standard deviation (units [average of the squared differences] from the mean)
+var() # variance (the average of all data points in a group)
+IQR() # quartiles
+
+# ask if there is further analysis needed to quantitatively analyze a variable
+
 ```
 
-## R Markdown
+GRAPHS:
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r, include = TRUE}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+install.packages("ggplot2")
+library(gglot2) # always load the ggplot 2 package
 
-```{r cars}
-summary(cars)
+# Scatterplot
+ggplot(data = data, aes(x = x, y = y, color = z)) +
+  geom_point()
+
+# color is the third variable
+
+# Barplot
+ggplot(data = data, aes(x = x, y = y, fill = z)) +
+  geom_bar(stat = "identity")
+
+# Histogram
+ggplot(data = data, aes(x = x)) +
+  geom_histogram(position = "identity")
+
+# Boxplot
+ggplot(data = data, aes(x = x)) +
+  geom_boxplot()
+
+# Graph + Modifications
+ggplot(data = data, aes(x = x, y = y, fill = z)) +
+  geom_point() +
+  ggtitle("Title") +
+  xlab("X Axis Name") +
+  ylab("Y Axis Name") + 
+  theme_classic()
+
 ```
 
-## Including Plots
+CORRELATIONS:
 
-You can also embed plots, for example:
+```{r, include = TRUE}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# Correlation
+cor(x = x, y = y, method = "pearson")
+
+# Correlation strengths guide
+# 0.9-1.00: Very strong
+# 0.7-0.9: High correlation
+# 0.5-0.7: Moderate correlation
+# 0.3-0.5: Low correlation
+# 0.0-0.3: Negligible correlation
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
