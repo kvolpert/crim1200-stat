@@ -105,3 +105,21 @@ cor(x = x, y = y, method = "pearson")
 
 ```
 
+TYPES OF ANALYSIS FOR DIFFERENT VARIABLE TYPES:
+- One Quantitative variable
+    - visual —> histrogram or boxplot
+    - descriptions —> min, max, median, mean, mode, IQR, standard deviation
+- Two quantitative variables
+    - visual ——> scatterplot
+    - descriptions —>
+- One categorical variable
+    - visual —> bar chart, pie chart (but don't use this)
+    - description —> frequency, counts, table(), percents
+- Two categorical variable:
+    - visual —> side by side barchart
+    - description —> contingency table
+
+NOTES:
+- If it's skewed data, don't use mean. Use median
+
+
