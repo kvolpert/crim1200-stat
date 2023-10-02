@@ -102,7 +102,13 @@ ggplot(data = data, aes(x = x, y = y, fill = z)) +
   ylab("Y Axis Name") + 
   theme_classic()
 
-# Add facet_wrap
+# Facet_wrap
+ggplot(data, aes(x, y)) + 
+  geom_point() + 
+  facet_wrap(vars(category))
+
+# this code creates a scatter plot of x vs y for each category
+# for example, if x was year, y was income, and the category was age group, this code would generate one plot for each age group
 
 ```
 
