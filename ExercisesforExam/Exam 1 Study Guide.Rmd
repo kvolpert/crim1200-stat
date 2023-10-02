@@ -25,12 +25,19 @@ table()
 # one variable tells you the count of each value (mostly used for categorical)
 # two variables creates a contingency table 
 prop.table(table()) # tells you the proportion of each value (mostly used for categorical)
+# Contingency table of two variables
+table(data$x, data$y)
+# Prop contingency table of two variables
+prop.table(table(data$x, data$y))
 
 # na.rm = T to exclude NAs in the calculations
 
 # Center
 median()
-mean()
+mean() # For mean and standard deviation, report with and w/out outliers
+
+# Mode of the categorical variable
+mode_data <- names(sort(table(data), decreasing = TRUE)[1])
 
 # Shape
 # Modes — number of humps in the histogram
@@ -46,7 +53,7 @@ mean()
 
 # Spread
 range()
-sd() # standard deviation (units [average of the squared differences] from the mean)
+sd() # standard deviation (units [average of the squared differences] from the mean) # For mean and standard deviation, report with and w/out outliers
 var() # variance (the average of all data points in a group)
 IQR() # quartiles
 
@@ -57,11 +64,11 @@ IQR() # quartiles
 TYPES OF ANALYSIS FOR DIFFERENT VARIABLE TYPES:
 
 - One Quantitative variable
-    - visual —> histrogram or boxplot
+    - visual —> histogram or boxplot
     - descriptions —> min, max, median, mean, mode, IQR, standard deviation
 - Two quantitative variables
     - visual ——> scatterplot
-    - descriptions —>
+    - descriptions —> correlation
 - One categorical variable
     - visual —> bar chart, pie chart (but don't use this)
     - description —> frequency, counts, table(), percents
@@ -109,6 +116,11 @@ ggplot(data, aes(x, y)) +
 
 # this code creates a scatter plot of x vs y for each category
 # for example, if x was year, y was income, and the category was age group, this code would generate one plot for each age group
+
+# From the professor (barplot w/ two categorical variables)
+melt(income.data) %>% 
+  ggplot(aes(x=gender, y=value, fill=education)) + 
+  geom_bar(stat="identity", position="dodge")
 
 ```
 
