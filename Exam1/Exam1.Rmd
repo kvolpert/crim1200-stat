@@ -1,0 +1,132 @@
+---
+title: "Exam1"
+author: "Katie Volpert"
+date: "2023-10-02"
+output: pdf_document
+---
+
+```{r, include = TRUE}
+
+# Setting working directory
+setwd("/Users/katievolpert/Documents/GitHub/crim1200-stat/Exam1")
+
+# Loading data
+crime <- read.csv("/Users/katievolpert/Documents/GitHub/crim1200-stat/data/crime.dat.csv")
+
+# Loading packages
+library(ggplot2)
+library(reshape2)
+
+# Question 1
+
+# Viewing the data
+View(crime)
+
+# Question 2
+
+# Making a barplot of crime type (visual)
+ggplot(data = crime, aes(x = crimetype)) +
+    geom_bar(stat = "count") +
+    ggtitle("Frequency of Crime Types") +
+    xlab("Crime Type") +
+    ylab("Count")
+
+# Question 3
+
+# Looking at the frequency of different crime type values (quantitative)
+summary(crime$crimetype)
+table(crime$crimetype)
+prop.table(table(crime$crimetype))
+prop.table(table(crime$crimetype)) * 100
+
+# Finding the mode for crime type (quantitative)
+names(sort(table(crime$crimetype), decreasing = TRUE)[1])
+
+# Question 4
+
+# Making a histogram (visual)
+ggplot(data = crime, aes(x = mentalhealthscore)) +
+    geom_histogram(position = "identity") +
+    ggtitle("Frequency of Mental Health Scores") +
+    xlab("Mental Health Score") +
+    ylab("Count")
+
+# Question 5
+
+# Looking at summary statistics
+summary(crime$mentalhealthscore)
+sd(crime$mentalhealthscore) 
+IQR(crime$mentalhealthscore)
+
+# Question 6
+
+# Creating a barplot by gender and mental health scores (visual)
+ggplot(data = crime, aes(x = gender, y = mentalhealthscore)) +
+  geom_bar(stat = "identity")  +
+  ggtitle("Mental Health Score by Gender") +
+  xlab("Gender") +
+  ylab("Mental Health Score")
+
+# Creating a barplot using averages instead of sums (visual)
+avg_by_gender <- aggregate(crime$mentalhealthscore ~ crime$gender,
+                           FUN = mean)
+colnames(avg_by_gender) <- c("gender", "menthealth")
+ggplot(data = avg_by_gender, aes(x = gender, y = menthealth)) +
+  geom_bar(stat = "identity")  +
+  ggtitle("Mental Health Score by Gender") +
+  xlab("Gender") +
+  ylab("Mental Health Score")
+
+# Subsetting the data to create a male and female df
+male_mh <- crime[crime$gender == "male",]
+female_mh <- crime[crime$gender == "female",]
+
+# Creating two boxplots with the subset data
+ggplot(data = crime, aes(x = mentalhealthscore)) +
+  geom_boxplot() +
+  facet_wrap(vars(gender)) +
+  ggtitle("Mental Health Score Summary Statistics by Gender") +
+  xlab("Mental Health Scores")
+
+# Creating side by side histograms
+ggplot(data = crime, aes(x = mentalhealthscore)) +
+  geom_histogram() +
+  facet_wrap(vars(gender)) +
+  ggtitle("Frequency of Mental Health Scores by Gender") +
+  xlab("Mental Health Score") +
+  ylab("Frequency")
+
+# Question 7 
+
+# Using summary to figure out the exact numbers
+summary(male_mh$mentalhealthscore)
+sd(male_mh$mentalhealthscore)
+summary(female_mh$mentalhealthscore)
+sd(female_mh$mentalhealthscore)
+
+# Separating the peaks (11)
+male_mh_p1 <- male_mh[male_mh$mentalhealthscore >= 11,]
+male_mh_p2 <- male_mh[male_mh$mentalhealthscore < 11,]
+mean(male_mh_p1$mentalhealthscore)
+sd(male_mh_p1$mentalhealthscore)
+mean(male_mh_p2$mentalhealthscore)
+sd(male_mh_p2$mentalhealthscore)
+
+# Finding the correlation between the two variables
+crime$gender_binary <- 0
+crime$gender_binary[crime$gender == "female"] <- 0
+crime$gender_binary[crime$gender == "male"] <- 1
+cor(crime$gender_binary, crime$mentalhealthscore, method = "pearson")
+
+# Question 8 
+
+# Creating a scatterplot of age and mental health scores
+ggplot(data = crime, aes(x = age, y = mentalhealthscore)) +
+  geom_point(stat = "identity")  +
+  ggtitle("Mental Health Scores by Age") +
+  xlab("Age") +
+  ylab("Mental Health Scores") +
+  geom_smooth(method = "lm")
+
+
+```

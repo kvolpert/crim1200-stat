@@ -1,0 +1,35 @@
+---
+title: "Exercise 41"
+author: "Katie Volpert"
+date: "2023-09-03"
+output: pdf_document
+---
+
+```{r, include = TRUE}
+
+# Setting my working directory
+setwd("/Users/katievolpert/Desktop/Code/CRIM 1200/Exercises")
+
+# Loading packages
+library(rio)
+
+# Loading the data
+kd <- import("/Users/katievolpert/Desktop/Code/CRIM 1200/Exercises/data/kentucky-derby-2018.txt")
+
+```
+
+```{r, include = TRUE}
+
+# Winning horse in 1880
+kd$Winner[kd$Year == 1880]
+
+# When did the length of the race change
+kd[kd$]
+
+# What was the winning time in 1974
+
+# Less than 2 minutes - horse and year
+
+
+
+```

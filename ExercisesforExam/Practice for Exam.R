@@ -53,7 +53,8 @@ ggplot(data = data, aes(x = income, y = happiness)) +
   geom_point(stat = "identity")  +
   ggtitle("Title") +
   xlab("Income") +
-  ylab("Happiness")
+  ylab("Happiness") +
+  geom_line(method = "lm")
 
 # Two quantitative
 cor(data$income, data$happiness, method = "pearson")
