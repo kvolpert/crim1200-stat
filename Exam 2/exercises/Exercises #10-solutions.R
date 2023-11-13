@@ -165,24 +165,26 @@ ggplot(data, aes(x=factor(sexatract.noNAs))) + geom_bar() +
 # 5. Regressions: Fit linear models for the following relationships.
 
 # a. Are the age of first use of alcohol and the age of first use of marijuana 
-# related? Is this relationship statistically significant?
+# related? Is this relationship statistically significant? For both of these, what are the confidence intervals for the relevant 
+# parameter? What is the proper way to interpret these?
 
 # name the null and alternative hypotheses:
 # H0: there is no relationship between iralcage and mjage
 # HA: there is a (positive?) relationship between iralcage and mjage
 
 # fit a linear model
-out <- lm(iralcage~mjage, data)
+reg <- lm(iralcage~mjage, data)
 
 # look at diagnostics
 par(mfrow=c(2,2))
-plot(out.t)
+plot(reg)
 par(mfrow=c(1,1))
+plot(data$mjage, data$iralcage)
 
 # They don't look great. 
 
 # Let's interpret the slope coefficient without transforming first.
-summary(out)
+summary(reg)
 
 # the interpretation would be, an additional year of mjage is associated with 0.3 
 # additional years of iralcage, and this is statistically significant at the 0.05 
@@ -190,13 +192,14 @@ summary(out)
 # later.
 
 # Let's try transforming the vars.
-out.t <- lm(iralcage~log(mjage), data)
+reg_transformed <- lm(iralcage~log(mjage), data)
 par(mfrow=c(2,2))
-plot(out.t)
+plot(reg_transformed)
 par(mfrow=c(1,1))
+plot(log(data$mjage), data$iralcage)
 # much better
 
-summary(out.t)
+summary(reg_transformed)
 # since we transformed x, the correct interpretation is that β represents the 
 # percentage change in Y for a one percent change in ln(X). and this is statistically 
 # significant at the .05 level.
@@ -204,15 +207,108 @@ summary(out.t)
 # b. For both of these, what are the confidence intervals for the relevant 
 # parameter? What is the proper way to interpret these?
 
-confint(out)
+confint(reg)
 
 # round it to 2 decimal points:
-round(confint(out), 2)
+round(confint(reg), 2)
 
 # The 95% confidence interval for the slope coefficient is [0.20, 0.40]. This 
 # does not cover zero, so we can reject the null hypothesis that iralcage and 
 # mjage are unrelated. If we had collected a new sample and calculated confidence 
 # intervals 100 times, 95 of those confidence intervals would cover the true value.
+
+
+
+
+
+
+# ChatGPT extra exercises
+
+# Are the age of first use of alcohol and the age of first use of marijuana 
+# related? Is this relationship statistically significant? 
+
+# Running a regression
+reg <- lm(iralcage ~ cigage, data = data)
+
+# Looking at the diagnostic plots
+par(mfrow=c(2,2))
+plot(reg)
+par(mfrow=c(1,1))
+
+# not homeoscedastic
+# relatively normal??
+# not linear
+
+# transform the y with log
+reg_transform_y <- lm(log(iralcage) ~ cigage, data = data)
+
+# look at new diagnostic plots
+par(mfrow=c(2,2))
+plot(reg_transform_y)
+par(mfrow=c(1,1))
+plot(data$cigage, log(data$iralcage))
+
+# relatively homeoscedastic
+# less normal?
+# relatively linear
+
+# transform the x with log
+reg_transform_x <- lm(iralcage ~ log(cigage), data = data)
+
+# look at new diagnostic plots
+par(mfrow=c(2,2))
+plot(reg_transform_x)
+par(mfrow=c(1,1))
+plot(log(data$cigage), data$iralcage)
+
+# relatively homeoscedastic
+# less normal?
+# relatively linear
+
+# loading a package
+library(MASS)
+install.packages("forecast")
+library(forecast)
+
+# box-cox transformation
+result <- boxcox(reg_transform_y)
+plot(result)
+
+# For both of these, what are the confidence intervals for the relevant parameter? 
+# What is the proper way to interpret these?
+
+round(confint(reg),2)
+
+# The 95% confidence interval for the slope coefficient is 0.07-0.26. This means
+# that we can reject the null hypothesis that iralcage and cigage are unrelated.
+# If we had done this 100 times with a new sample and re-calculated the coefficient
+# intervals, 95 of these confidence intervals would cover the true value. 
+
+# visual
+ggplot(data, aes(x=irsex, y=mjage)) +
+  geom_boxplot(fill = "lightblue") +
+  ggtitle("Title") +
+  xlab("x label") +
+  ylab("y label")
+
+grouped_data <- aggregate(mjage ~ irsex, data = data, 
+                          FUN = function(x) {
+                            num.obs <- length(x)
+                            mean <- round(mean(x), 0)
+                            sd <- round(sd(x), 0)
+                            se <- round(sd(x) / sqrt(num.obs), 0)
+                            c(num.obs, mean, sd, se)
+                          })
+
+# t-test
+data_ttest <- t.test(data$mjage ~ data$irsex)
+data_ttest
+
+
+
+
+
+
 
 
 

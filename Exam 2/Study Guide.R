@@ -2,6 +2,8 @@
 # setting working directory
 setwd("~/Documents/GitHub/crim1200-stat/Exam 2")
 
+library(MASS)
+
 
               ############# HYPOTHESIS TESTING #############
 
@@ -32,7 +34,7 @@ grouped_data <- aggregate(quantiative_y ~ categorical_x, data = data,
 grouped_data
 
 # T-test
-data_ttest <- t.test(data$x, data$y)
+data_ttest <- t.test(data$y ~ data$x)
 data_ttest
 # see only p-value
 data_ttest$p.value
@@ -87,19 +89,38 @@ summary(reg.log)
 data_log = lm(log(y) ~ x, data = data)
 boxcox(data_log)
 
+# When to use different types:
 
+  # Nonlinear: log(x)
+  # Heteroscedastic: log(y)
+  # Not normal: log(y)
 
 
 
 
                     ############# ANOVA #############
 
-# ANOVA test
+# run an ANOVA test
 anova_output <- aov(y ~ x, data = data)
-summary(anova_output)
 
-# honest significant difference test
-tukey.test <- TukeyHSD(x=anova.output, 'race', conf.level=0.95)
+# read the output
+summary(anova_output) 
+
+# the larger the F value, the more likely it is that the variation caused by the 
+# independent variable is real and not due to chance
+
+# the p-value shows how likely it is that the F value calculated from the test 
+# would have occurred if the null hypothesis of no difference among group means were true
+
+# look at the diagnostic plots to check for assumptions
+par(mfrow=c(2,2))
+plot(anova_output)
+par(mfrow=c(1,1))
+
+# run a tukey test to see which variables have statistically significant differences
+tukey.test <- TukeyHSD(x=anova_output, 'race', conf.level=0.95)
+
+# plot the tukey test
 plot(tukey.test , las=1 , col="brown")
 
                 ############# CONFIDENCE #############
@@ -208,7 +229,7 @@ round(confint(reg), 2)
   # features: comparison of mean, median, iqr, max, min, sd
   
   # visual: side by side boxplots
-  ggplot(data, aes(y=y, x=factor(x))) + 
+  ggplot(data, aes(x=factor(x), y=y)) + 
     geom_boxplot() +
     scale_x_discrete(breaks = c(1, 2), labels = c("Label 1", "Label 2")) + 
     ylab("y axis") + xlab("x axis") +
@@ -240,7 +261,8 @@ round(confint(reg), 2)
     ############# REVIEW OF LINEAR REGRESSION ASSUMPTIONS #############
   
 # Homoscedasticity: the data points are consistently far away from the line of best fit
-  # How to check: use the scale-location plot (it should be flat if it's homoscedastic)
+  # How to check: use the scale-location plot (it should be flat if it's 
+  # homoscedastic with equally spread points)
   
 # Normality: the data follows a normal distribution (i.e., For any fixed value of x, 
 # y is normally distributed)
